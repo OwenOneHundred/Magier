@@ -32,6 +32,12 @@ public class Tile : MonoBehaviour
         _highlight.SetActive(false);
     }
 
+    // Removes highlight when the mouse exits.
+    private void OnMouseDown()
+    {
+        _highlight.SetActive(false);
+    }
+
     // Sets ownership of the tile by owner name.
     public bool SetOwnership(string ownerName)
     {

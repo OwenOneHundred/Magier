@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class TurnManager : MonoBehaviour
 {
-    GameState state = GameState.playerTurn;
+    public GameState state = GameState.playerTurn;
 
     void EndEnemyTurn()
     {

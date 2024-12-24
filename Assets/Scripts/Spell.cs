@@ -1,16 +1,10 @@
 using UnityEngine;
 
-public class Spell : MonoBehaviour
+public abstract class Spell : ScriptableObject
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
+    int manaCost = 5;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    int price;
+
+    
 }
