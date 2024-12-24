@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class Tile : MonoBehaviour
@@ -6,7 +8,11 @@ public class Tile : MonoBehaviour
     [SerializeField] private SpriteRenderer _renderer;
     [SerializeField] private GameObject _highlight;
 
-    public bool IsOwned { get; private set; }
+    [SerializeField] List<Owner> allOwners; // list of all owners, assigned in inspector.
+    // this is on every tile, so it would be slightly slow if you had 1000+ tiles or 40+ owners
+    // Should be ordered by most to least common owner for very slight performance boost
+
+    public Owner CurrentOwner { get; private set; }
 
     // Initializes the tile's color based on its offset status.
     public void Init(bool isOffset)
@@ -26,12 +32,23 @@ public class Tile : MonoBehaviour
         _highlight.SetActive(false);
     }
 
-    // Sets ownership of the tile.
-    public void SetOwnership(Sprite sprite)
+    // Sets ownership of the tile by owner name.
+    public bool SetOwnership(string ownerName)
     {
-        if (IsOwned) return;
+        if (CurrentOwner != null) return false;
 
-        _renderer.sprite = sprite;
-        IsOwned = true;
+        Owner newOwner = allOwners.First(x => x.name == ownerName);
+
+        _renderer.sprite = newOwner.tileSprite;
+        CurrentOwner = newOwner;
+
+        return true;
+    }
+
+    [System.Serializable]
+    public class Owner // owner class. Holds a name and a sprite. Could be expanded to have effects, etc
+    {
+        public string name = "";
+        public Sprite tileSprite;
     }
 }

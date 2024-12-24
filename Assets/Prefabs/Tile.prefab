@@ -193,8 +193,11 @@ MonoBehaviour:
   _offsetColor: {r: 0.18499863, g: 0.09344962, b: 0.26415092, a: 1}
   _renderer: {fileID: 5827267205243379030}
   _highlight: {fileID: 2852233309768987289}
-  _playerSprite: {fileID: -8868272330977153355, guid: 088251a8a51094270b807d13cad26fbc, type: 3}
-  _enemySprite: {fileID: -4544814233504295190, guid: 093b5cf98a4994bfe8fdb8fc5e81006f, type: 3}
+  allOwners:
+  - name: Player
+    tileSprite: {fileID: -8868272330977153355, guid: 088251a8a51094270b807d13cad26fbc, type: 3}
+  - name: Enemy
+    tileSprite: {fileID: -4544814233504295190, guid: 093b5cf98a4994bfe8fdb8fc5e81006f, type: 3}
 --- !u!61 &7745536282088799249
 BoxCollider2D:
   m_ObjectHideFlags: 0
