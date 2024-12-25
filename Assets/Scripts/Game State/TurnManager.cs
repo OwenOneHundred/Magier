@@ -5,6 +5,14 @@ public class TurnManager : MonoBehaviour
 {
     public GameState state = GameState.playerTurn;
 
+    void Update()
+    {
+        if (state == GameState.playerTurn)
+        {
+            
+        }
+    }
+
     void EndEnemyTurn()
     {
 
