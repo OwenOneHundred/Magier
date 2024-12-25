@@ -2,6 +2,13 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
+/// <summary>
+/// Class that represents the functions and data associated with a particular type of tile.
+/// Determines what to do when a tile is clicked, hovered, etc.
+/// That way, special tiles can have their own behaviors.
+/// This is an abstract class, so it determines the information all tile types must have.
+/// This is a ScriptableObject class, so it can be made into objects in the assets folder.
+/// </summary>
 public abstract class TileData : ScriptableObject
 {
     public string tileName;
@@ -24,6 +31,7 @@ public abstract class TileData : ScriptableObject
 
     /// <summary>
     /// Set the colour of a tile.
+    /// I took this from reddit.
     /// </summary>
     /// <param name="colour">The desired colour.</param>
     /// <param name="position">The position of the tile.</param>

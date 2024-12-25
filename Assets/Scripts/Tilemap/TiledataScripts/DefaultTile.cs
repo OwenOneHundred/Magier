@@ -1,5 +1,8 @@
 using UnityEngine;
 
+/// <summary>
+/// Basic tile with no special properties. This will be the default tile.
+/// </summary>
 [CreateAssetMenu(menuName = "Tile/Default Tile")]
 public class DefaultTile : TileData
 {

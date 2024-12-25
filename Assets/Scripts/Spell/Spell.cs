@@ -1,10 +1,12 @@
 using UnityEngine;
 
+/// <summary>
+/// Abstract class for spells. Determines what spells do when casted, their costs, etc.
+/// </summary>
 public abstract class Spell : ScriptableObject
 {
-    int manaCost = 5;
+    public int manaCost = 5;
+    public int price;
 
-    int price;
-
-    
+    public abstract void OnCast();
 }

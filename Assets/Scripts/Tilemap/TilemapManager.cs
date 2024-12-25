@@ -4,15 +4,19 @@ using UnityEngine;
 using UnityEngine.InputSystem.LowLevel;
 using UnityEngine.Tilemaps;
 
+/// <summary>
+/// Class that oversees all general tilemap behaviors and information.
+/// </summary>
 public class TilemapManager : MonoBehaviour
 {
-    public static TilemapManager tilemapManager;
     [System.NonSerialized] public TileBase currentHoveredTile;
     [System.NonSerialized] public TileData currentHoveredTiledata;
     [System.NonSerialized] public Vector3Int currentHoveredTilePosition;
+
+    public static TilemapManager tilemapManager; // public static reference to this to be used from everywhere
     void Awake()
     {
-        if (tilemapManager == null || tilemapManager == this)
+        if (tilemapManager == null || tilemapManager == this) // if tilemap manager already exists, destroy this one
         {
             tilemapManager = this;
             CreateFreshTiledataSOs();
@@ -25,9 +29,9 @@ public class TilemapManager : MonoBehaviour
 
     void Start()
     {
-        GetComponent<TilemapGenerator>().GenerateTilemap(); // for testing
+        GetComponent<TilemapGenerator>().GenerateTilemap(); // for testing, make a little tilemap
 
-        InputManager.inputManager.onClick += OnClick;
+        InputManager.inputManager.onClick += OnClick; // On click, call this class's onclick method
     }
 
     void Update()
@@ -35,7 +39,7 @@ public class TilemapManager : MonoBehaviour
         SetCurrentHoveredTile();
     }
 
-    void SetCurrentHoveredTile()
+    void SetCurrentHoveredTile() // update data based on where mouse is now
     {
         Vector3Int newTilePosition = groundTilemap.WorldToCell(Camera.main.ScreenToWorldPoint(Input.mousePosition));
         if (currentHoveredTilePosition == newTilePosition) { return; } // do nothing if selected tile is same
@@ -55,11 +59,11 @@ public class TilemapManager : MonoBehaviour
         
     }
 
-    public void OnClick()
+    public void OnClick() // on click
     {
-        if (currentHoveredTiledata != null)
+        if (currentHoveredTiledata != null) // if currently hovering a tile (not nothing)
         {
-            currentHoveredTiledata.OnClicked(currentHoveredTilePosition);
+            currentHoveredTiledata.OnClicked(currentHoveredTilePosition); // call that tile's tiledata's OnClicked
         }
     }
 

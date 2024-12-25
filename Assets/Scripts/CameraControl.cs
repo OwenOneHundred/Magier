@@ -1,5 +1,8 @@
 using UnityEngine;
 
+/// <summary>
+/// Moves the camera so the mouse is never offscreen.
+/// </summary>
 public class CameraControl : MonoBehaviour
 {
     [SerializeField] float cameraSpeed;

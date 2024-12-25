@@ -1,6 +1,9 @@
 using System.Collections;
 using UnityEngine;
 
+/// <summary>
+/// Handles logic that takes turns between player and opponent.
+/// </summary>
 public class TurnManager : MonoBehaviour
 {
     public GameState state = GameState.playerTurn;
@@ -9,7 +12,7 @@ public class TurnManager : MonoBehaviour
     {
         if (state == GameState.playerTurn)
         {
-            
+
         }
     }
 

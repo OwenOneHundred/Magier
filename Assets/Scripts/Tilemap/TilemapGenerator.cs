@@ -3,7 +3,10 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-public class TilemapGenerator : MonoBehaviour // this is just for testing, or simple levels, probably
+/// <summary>
+/// Makes a box of tiles from (0, 0) up and to the right. This is for testing.
+/// </summary>
+public class TilemapGenerator : MonoBehaviour
 {
     [SerializeField] Vector2 tilemapSize = new Vector2(10, 6);
     [SerializeField] TileBase groundTile;
