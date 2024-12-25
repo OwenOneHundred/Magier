@@ -6,6 +6,19 @@ using UnityEngine;
 /// </summary>
 public class TurnManager : MonoBehaviour
 {
+    public static TurnManager turnManager;
+    void Awake()
+    {
+        if (turnManager == null || turnManager == this) // if tilemap manager already exists, destroy this one
+        {
+            turnManager = this;
+        }
+        else 
+        {
+            Destroy(gameObject);
+        }
+    }
+    
     public GameState state = GameState.playerTurn;
 
     void Update()

@@ -13,7 +13,13 @@ public class TilemapManager : MonoBehaviour
     [System.NonSerialized] public TileData currentHoveredTiledata;
     [System.NonSerialized] public Vector3Int currentHoveredTilePosition;
 
+    public Tilemap groundTilemap;
+    public Tilemap tileBordersTilemap;
+
+    public List<TileData> allTileData;
+
     public static TilemapManager tilemapManager; // public static reference to this to be used from everywhere
+
     void Awake()
     {
         if (tilemapManager == null || tilemapManager == this) // if tilemap manager already exists, destroy this one
@@ -67,7 +73,6 @@ public class TilemapManager : MonoBehaviour
         }
     }
 
-    public List<TileData> allTileData;
     void CreateFreshTiledataSOs()
     {
         for (int i = 0; i < allTileData.Count; i++)
@@ -75,9 +80,6 @@ public class TilemapManager : MonoBehaviour
             allTileData[i] = Instantiate(allTileData[i]);
         }
     }
-
-    public Tilemap groundTilemap;
-    public Tilemap tileBordersTilemap;
 
     public TileData GetTileData(TileBase tileBase)
     {
