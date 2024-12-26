@@ -3,6 +3,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem.LowLevel;
 using UnityEngine.Tilemaps;
+using static UnityEngine.InputSystem.InputAction;
 
 /// <summary>
 /// Class that oversees all general tilemap behaviors and information.
@@ -65,7 +66,7 @@ public class TilemapManager : MonoBehaviour
         
     }
 
-    public void OnClick() // on click
+    public void OnClick(CallbackContext context) // on click
     {
         if (currentHoveredTiledata != null) // if currently hovering a tile (not nothing)
         {

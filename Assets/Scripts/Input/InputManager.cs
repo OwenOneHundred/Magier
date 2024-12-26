@@ -20,13 +20,10 @@ public class InputManager : MonoBehaviour
         }
     }
 
-    public Action onClick;
+    public Action<CallbackContext> onClick;
 
     public void OnClick(CallbackContext context)
     {
-        if (context.phase == UnityEngine.InputSystem.InputActionPhase.Performed)
-        {
-            onClick?.Invoke();
-        }       
+        onClick?.Invoke(context);
     }
 }

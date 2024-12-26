@@ -6,6 +6,7 @@ TagManager:
   tags:
   - GroundTilemap
   - TileBordersTilemap
+  - GlowTilemap
   layers:
   - Default
   - TransparentFX
