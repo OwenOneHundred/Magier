@@ -10,20 +10,28 @@ using UnityEngine.UI;
 /// </summary>
 public class IngameUIController : MonoBehaviour 
 {
-    [SerializeField] public Slider manaSlider;
-    [SerializeField] public int currentMana = 0;
-    [SerializeField] public int maxMana = 20;
-    [SerializeField] public int manaRegen = 5;
+    public Slider manaSlider;
+    public int currentMana = 0;
+    public int maxMana = 20;
+    public int manaRegen = 5;
     
-    // Contains the current selected spell. (once you do that)
-    [SerializeField] private Spell selectedSpell;
-
+    // Contains the current selected spell.
+    public Spell selectedSpell;
+    int selectedButtonIndex = -1;
     [SerializeField] private List<Spell> spellList = new List<Spell> ();
 
-    // Called by Unity Events on the buttons, sets the current selected spell (once you do both of those things)
+    // Called by Unity Events on the buttons, sets the current selected spell
     public void SetSelectedSpell(int buttonIndex)
     {
-        selectedSpell = spellList[buttonIndex]; 
+        if (selectedButtonIndex == buttonIndex) // if you press the same button again, deselect spell
+        {
+            selectedButtonIndex = -1;
+            selectedSpell = null;
+            return;
+        }
+
+        selectedSpell = spellList[buttonIndex];
+        selectedButtonIndex = buttonIndex; 
     }
 
     public void OnTurnStart()
@@ -32,7 +40,6 @@ public class IngameUIController : MonoBehaviour
         UpdateManaDisplay();
     }
 
-    // Make mana variable higher, with cap of 20. then update the slider
     private void UpdateManaDisplay()
     {
         manaSlider.value = currentMana / maxMana;
