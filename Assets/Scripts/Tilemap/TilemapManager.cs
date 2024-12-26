@@ -44,9 +44,6 @@ public class TilemapManager : MonoBehaviour
     void Start()
     {
         GetComponent<TilemapGenerator>().GenerateTilemap(); // for testing, make a little tilemap
-        spellToTest.OnHovered(positionToTestSpell, 6);
-        spellToTest.OnCast(positionToTestSpell, 6, allOwners[0]);
-        //spellToTest.OnUnhovered(positionToTestSpell, 6);
     }
 
     void Update()
