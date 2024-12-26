@@ -14,12 +14,19 @@ public class TilemapManager : MonoBehaviour
     [System.NonSerialized] public TileData currentHoveredTiledata;
     [System.NonSerialized] public Vector3Int currentHoveredTilePosition;
 
+    Dictionary<Vector3Int, TileOwner> ownedPositions = new();
+
     public Tilemap groundTilemap;
     public Tilemap tileBordersTilemap;
+    public Tilemap glowTilemap;
 
     public List<TileData> allTileData;
+    public List<TileOwner> allOwners;
 
     public static TilemapManager tilemapManager; // public static reference to this to be used from everywhere
+
+    public Spell spellToTest;
+    public Vector3Int positionToTestSpell = new Vector3Int(3, 3);
 
     void Awake()
     {
@@ -37,8 +44,9 @@ public class TilemapManager : MonoBehaviour
     void Start()
     {
         GetComponent<TilemapGenerator>().GenerateTilemap(); // for testing, make a little tilemap
-
-        InputManager.inputManager.onClick += OnClick; // On click, call this class's onclick method
+        spellToTest.OnHovered(positionToTestSpell, 6);
+        spellToTest.OnCast(positionToTestSpell, 6, allOwners[0]);
+        //spellToTest.OnUnhovered(positionToTestSpell, 6);
     }
 
     void Update()
@@ -63,15 +71,48 @@ public class TilemapManager : MonoBehaviour
         {
             currentHoveredTiledata.OnHovered(newTilePosition); // hover new position
         }
-        
     }
 
-    public void OnClick(CallbackContext context) // on click
+    /// <summary>
+    /// Sets owner of tile, calls owner.OnOwnTile(position), and adds to dict of owned tiles. 
+    /// </summary>
+    /// <param name="position">Grid position of tile</param>
+    /// <param name="ownerName">name of the owner. Player, etc</param>
+    public void SetTileOwner(Vector3Int position, string ownerName = "Player")
     {
-        if (currentHoveredTiledata != null) // if currently hovering a tile (not nothing)
+        TileOwner tileOwner = GetOwnerByName(ownerName);
+        ownedPositions.Add(position, tileOwner);
+        tileOwner.OnOwnTile(position);
+        tileBordersTilemap.SetTile(position, tileOwner.borderTilemapTile);
+        glowTilemap.SetTile(position, tileOwner.glowTilemapTile);
+    }
+    
+    /// <summary>
+    /// Sets owner of tile, calls owner.OnOwnTile(position), and adds to dict of owned tiles. 
+    /// </summary>
+    /// <param name="position">Grid position of tile</param>
+    /// <param name="owner">name of the owner. Player, etc</param>
+    public void SetTileOwner(Vector3Int position, TileOwner tileOwner)
+    {
+        ownedPositions.Add(position, tileOwner);
+        tileOwner.OnOwnTile(position);
+        tileBordersTilemap.SetTile(position, tileOwner.borderTilemapTile);
+        glowTilemap.SetTile(position, tileOwner.glowTilemapTile);
+    }
+
+    public TileOwner GetOwnerByName(string name)
+    {
+        TileOwner toReturn = allOwners.FirstOrDefault(x => x.name == name);
+        if (toReturn == null) 
         {
-            currentHoveredTiledata.OnClicked(currentHoveredTilePosition); // call that tile's tiledata's OnClicked
+            Debug.LogWarning("Tried to get owner: " + name +
+                " but no owner of that name exists in allOwners list. Returned allOwners[0].");
+            return allOwners[0];
         }
+        else 
+        {
+            return toReturn;
+        }   
     }
 
     void CreateFreshTiledataSOs()

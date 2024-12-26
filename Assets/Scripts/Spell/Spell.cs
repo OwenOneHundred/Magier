@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -9,5 +10,8 @@ public abstract class Spell : ScriptableObject
     public int manaCost = 5;
     public int price;
 
-    public abstract void OnCast(TileBase tileBase);
+    public abstract void OnCast(Vector3Int position, int diceRoll, TileOwner caster);
+    public abstract List<Vector3Int> GetSelectedTiles(Vector3Int position, int diceRoll);
+    public abstract void OnHovered(Vector3Int position, int diceRoll);
+    public abstract void OnUnhovered(Vector3Int position, int diceRoll);
 }
