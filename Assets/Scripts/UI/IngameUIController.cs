@@ -18,11 +18,27 @@ public class IngameUIController : MonoBehaviour
     // Contains the current selected spell.
     public Spell selectedSpell;
     int selectedButtonIndex = -1;
-    [SerializeField] private List<Spell> spellList = new List<Spell> ();
+    [SerializeField] private List<Spell> spellList = new List<Spell>();
+    [SerializeField] private List<TMPro.TextMeshProUGUI> buttonTexts = new List<TMPro.TextMeshProUGUI>();
+
+    void Start()
+    {
+        // this is only for testing until we have shop to buy spells
+        for (int i = 0; i < spellList.Count; i++)
+        {
+            SetButtonSpell(i, spellList[i]);
+        }
+    }
 
     void Update()
     {
         UpdateManaDisplay();
+    }
+
+    public void SetButtonSpell(int buttonIndex, Spell spell)
+    {
+        spellList[buttonIndex] = spell;
+        buttonTexts[buttonIndex].text = spell.name;
     }
 
     // Called by Unity Events on the buttons, sets the current selected spell
