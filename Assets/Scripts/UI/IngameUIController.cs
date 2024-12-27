@@ -47,7 +47,7 @@ public class IngameUIController : MonoBehaviour
 
     private void UpdateManaDisplay()
     {
-        manaSlider.value = currentMana / maxMana;
+        manaSlider.value = currentMana / (float)maxMana;
     }
 
 }
