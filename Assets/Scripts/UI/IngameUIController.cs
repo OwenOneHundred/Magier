@@ -20,6 +20,11 @@ public class IngameUIController : MonoBehaviour
     int selectedButtonIndex = -1;
     [SerializeField] private List<Spell> spellList = new List<Spell> ();
 
+    void Update()
+    {
+        UpdateManaDisplay();
+    }
+
     // Called by Unity Events on the buttons, sets the current selected spell
     public void SetSelectedSpell(int buttonIndex)
     {
@@ -37,7 +42,7 @@ public class IngameUIController : MonoBehaviour
     public void OnTurnStart()
     {
         currentMana += manaRegen;
-        UpdateManaDisplay();
+        //UpdateManaDisplay();
     }
 
     private void UpdateManaDisplay()
