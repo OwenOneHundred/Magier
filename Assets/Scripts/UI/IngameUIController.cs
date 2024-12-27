@@ -1,8 +1,8 @@
-using System;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
+
 /// <summary>
 /// Has a public variable that contains what spell is currently selected.
 /// Changes what spell is selected when UI button is pressed.
@@ -10,32 +10,60 @@ using UnityEngine.UI;
 /// </summary>
 public class IngameUIController : MonoBehaviour 
 {
-    [SerializeField] public Slider manaSlider;
-    [SerializeField] public int currentMana = 0;
-    [SerializeField] public int maxMana = 20;
-    [SerializeField] public int manaRegen = 5;
+    public Slider manaSlider;
+    public int currentMana = 0;
+    public int maxMana = 20;
+    public int manaRegen = 5;
     
-    // Contains the current selected spell. (once you do that)
-    [SerializeField] private Spell selectedSpell;
+    // Contains the current selected spell.
+    public Spell selectedSpell;
+    int selectedButtonIndex = -1;
+    [SerializeField] private List<Spell> spellList = new List<Spell>();
+    [SerializeField] private List<TMPro.TextMeshProUGUI> buttonTexts = new List<TMPro.TextMeshProUGUI>();
 
-    [SerializeField] private List<Spell> spellList = new List<Spell> ();
+    void Start()
+    {
+        // this is only for testing until we have shop to buy spells
+        for (int i = 0; i < spellList.Count; i++)
+        {
+            SetButtonSpell(i, spellList[i]);
+        }
+    }
 
-    // Called by Unity Events on the buttons, sets the current selected spell (once you do both of those things)
+    void Update()
+    {
+        UpdateManaDisplay();
+    }
+
+    public void SetButtonSpell(int buttonIndex, Spell spell)
+    {
+        spellList[buttonIndex] = spell;
+        buttonTexts[buttonIndex].text = spell.name;
+    }
+
+    // Called by Unity Events on the buttons, sets the current selected spell
     public void SetSelectedSpell(int buttonIndex)
     {
-        selectedSpell = spellList[buttonIndex]; 
+        if (selectedButtonIndex == buttonIndex) // if you press the same button again, deselect spell
+        {
+            selectedButtonIndex = -1;
+            selectedSpell = null;
+            return;
+        }
+
+        selectedSpell = spellList[buttonIndex];
+        selectedButtonIndex = buttonIndex; 
     }
 
     public void OnTurnStart()
     {
         currentMana += manaRegen;
-        UpdateManaDisplay();
+        //UpdateManaDisplay();
     }
 
-    // Make mana variable higher, with cap of 20. then update the slider
     private void UpdateManaDisplay()
     {
-        manaSlider.value = currentMana / maxMana;
+        manaSlider.value = currentMana / (float)maxMana;
     }
 
 }

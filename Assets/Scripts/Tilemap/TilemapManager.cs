@@ -91,6 +91,7 @@ public class TilemapManager : MonoBehaviour
     /// <param name="owner">name of the owner. Player, etc</param>
     public void SetTileOwner(Vector3Int position, TileOwner tileOwner)
     {
+        if (ownedPositions.ContainsKey(position)) { return; }
         ownedPositions.Add(position, tileOwner);
         tileOwner.OnOwnTile(position);
         tileBordersTilemap.SetTile(position, tileOwner.borderTilemapTile);

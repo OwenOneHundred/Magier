@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Unity.Mathematics;
 using UnityEngine;
+using UnityEngine.AI;
 using UnityEngine.Tilemaps;
 
 [CreateAssetMenu(menuName = "Spell/Pattern Area Spell")]
@@ -10,12 +11,22 @@ public class PatternAreaSpell : Spell
     [SerializeField] float diceRollImpactMultiplier = 1;
     GameObject shapeObject;
 
-    public override void OnHovered(Vector3Int position, int diceRoll)
+    public override void WhileHovering(Vector3Int position, int diceRoll)
     {
-        
+        hovered = true;
+        if (shapeObject == null)
+        {
+            CreateShapeObject(position, diceRoll);
+        }
+
+        shapeObject.transform.position =
+            TilemapManager.tilemapManager.groundTilemap.CellToWorld(position) + new Vector3(0.5f, 0.5f, 0);
     }
-    public override void OnUnhovered(Vector3Int position, int diceRoll)
+
+    public override void OnUnhovered(Vector3Int position)
     {
+        if (hovered == false) { return; }
+        hovered = false;
         DestroyShapeObject();
     }
 
@@ -23,8 +34,9 @@ public class PatternAreaSpell : Spell
     {
         float scaleFactor = 1 + (((diceRoll - 6)/10) * diceRollImpactMultiplier);
         shapeObject = Instantiate(shapePrefab,
-            TilemapManager.tilemapManager.groundTilemap.CellToWorld(position),
+            TilemapManager.tilemapManager.groundTilemap.CellToWorld(position) + new Vector3(0.5f, 0.5f, 0),
             Quaternion.identity);
+
         shapeObject.transform.localScale *= scaleFactor;
     }
 
@@ -45,7 +57,7 @@ public class PatternAreaSpell : Spell
 
         Tilemap groundTilemap = TilemapManager.tilemapManager.groundTilemap;
 
-        shapeObject.transform.position = groundTilemap.CellToWorld(position);
+        shapeObject.transform.position = groundTilemap.CellToWorld(position) + new Vector3(0.5f, 0.5f, 0);
 
         Collider2D shapeCollider = shapeObject.GetComponent<Collider2D>();
         Bounds bounds = shapeCollider.bounds;
@@ -64,7 +76,6 @@ public class PatternAreaSpell : Spell
                 }
             }
         }
-        Debug.Log(hitTiles.Count + " out of " + countForTest);
         return hitTiles;
     }
 
@@ -74,5 +85,7 @@ public class PatternAreaSpell : Spell
         {
             TilemapManager.tilemapManager.SetTileOwner(tilePos, caster);
         }
+        Destroy(shapeObject, 2);
+        shapeObject = null;
     }
 }

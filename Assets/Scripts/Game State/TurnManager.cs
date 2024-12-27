@@ -1,5 +1,10 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
+using UnityEngine.Tilemaps;
+using static UnityEngine.InputSystem.InputAction;
 
 /// <summary>
 /// Handles logic that takes turns between player and opponent.
@@ -7,6 +12,7 @@ using UnityEngine;
 public class TurnManager : MonoBehaviour
 {
     public static TurnManager turnManager;
+    private IngameUIController ingameUIController;
     void Awake()
     {
         if (turnManager == null || turnManager == this) // if tilemap manager already exists, destroy this one
@@ -18,15 +24,48 @@ public class TurnManager : MonoBehaviour
             Destroy(gameObject);
         }
     }
-    
+
     public GameState state = GameState.playerTurn;
 
-    void Update()
+    void Start()
     {
-        if (state == GameState.playerTurn)
-        {
+        ingameUIController = GameObject.FindAnyObjectByType<IngameUIController>();
+    }
 
+    private void Update()
+    {
+        if (ingameUIController.selectedSpell == null) { return; }
+        if (!EventSystem.current.IsPointerOverGameObject(PointerInputModule.kMouseLeftId)) // mouse not over UI
+        {
+            if (Mouse.current.leftButton.wasPressedThisFrame) // mouse not over UI - clicking
+            {
+                if (state == GameState.playerTurn && !EventSystem.current.IsPointerOverGameObject())
+                {
+                    TryCastSpell();
+                }
+            }
+            else // mouse not over UI - not clicking
+            {
+                ingameUIController.selectedSpell.WhileHovering(TilemapManager.tilemapManager.currentHoveredTilePosition, 6);
+            }
         }
+        else // mouse over UI
+        {
+            ingameUIController.selectedSpell.OnUnhovered(TilemapManager.tilemapManager.currentHoveredTilePosition);
+        }
+    }
+
+    void TryCastSpell()
+    {
+        Debug.Log("try cast spell");
+        if (ingameUIController.selectedSpell == null) { return; }
+
+        if (ingameUIController.currentMana < ingameUIController.selectedSpell.manaCost) { return; }
+
+        Vector3Int castTilePos = TilemapManager.tilemapManager.currentHoveredTilePosition;
+        ingameUIController.selectedSpell.OnCast(castTilePos,
+            UnityEngine.Random.Range(1, 7), // TODO replace when we have dice that can be rolled
+            TilemapManager.tilemapManager.GetOwnerByName("Player"));
     }
 
     void EndEnemyTurn()

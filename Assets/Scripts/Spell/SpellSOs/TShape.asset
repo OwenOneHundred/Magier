@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3ec82f06df6414cba976f9cdf291fbbd, type: 3}
-  m_Name: Star
+  m_Name: TShape
   m_EditorClassIdentifier: 
   manaCost: 5
   price: 50
-  shapePrefab: {fileID: 274155687317050222, guid: 0bfdd5cfdf8f443dcb31be618087e410, type: 3}
+  shapePrefab: {fileID: 274155687317050222, guid: f7c1bda20d6134dbe83138790fe0f10b, type: 3}
   diceRollImpactMultiplier: 1
