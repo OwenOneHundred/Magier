@@ -1,8 +1,8 @@
-using System;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
+
 /// <summary>
 /// Has a public variable that contains what spell is currently selected.
 /// Changes what spell is selected when UI button is pressed.

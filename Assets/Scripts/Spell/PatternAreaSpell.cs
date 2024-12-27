@@ -23,8 +23,9 @@ public class PatternAreaSpell : Spell
     {
         float scaleFactor = 1 + (((diceRoll - 6)/10) * diceRollImpactMultiplier);
         shapeObject = Instantiate(shapePrefab,
-            TilemapManager.tilemapManager.groundTilemap.CellToWorld(position),
+            TilemapManager.tilemapManager.groundTilemap.CellToWorld(position) + new Vector3(0.5f, 0.5f, 0),
             Quaternion.identity);
+
         shapeObject.transform.localScale *= scaleFactor;
     }
 
@@ -45,7 +46,7 @@ public class PatternAreaSpell : Spell
 
         Tilemap groundTilemap = TilemapManager.tilemapManager.groundTilemap;
 
-        shapeObject.transform.position = groundTilemap.CellToWorld(position);
+        shapeObject.transform.position = groundTilemap.CellToWorld(position) + new Vector3(0.5f, 0.5f, 0);
 
         Collider2D shapeCollider = shapeObject.GetComponent<Collider2D>();
         Bounds bounds = shapeCollider.bounds;
@@ -64,7 +65,7 @@ public class PatternAreaSpell : Spell
                 }
             }
         }
-        Debug.Log(hitTiles.Count + " out of " + countForTest);
+        Debug.Log("out of " + countForTest + ", " + hitTiles.Count + " had their centers covered by the collider.");
         return hitTiles;
     }
 
@@ -74,5 +75,7 @@ public class PatternAreaSpell : Spell
         {
             TilemapManager.tilemapManager.SetTileOwner(tilePos, caster);
         }
+        Destroy(shapeObject, 2);
+        shapeObject = null;
     }
 }
