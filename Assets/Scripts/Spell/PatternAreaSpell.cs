@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Unity.Mathematics;
+using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Tilemaps;
@@ -10,6 +11,7 @@ public class PatternAreaSpell : Spell
     [SerializeField] GameObject shapePrefab;
     [SerializeField] float diceRollImpactMultiplier = 1;
     GameObject shapeObject;
+    List<Vector3Int> selectedPositions = new List<Vector3Int>();
 
     public override void WhileHovering(Vector3Int position, int diceRoll)
     {
@@ -21,12 +23,27 @@ public class PatternAreaSpell : Spell
 
         shapeObject.transform.position =
             TilemapManager.tilemapManager.groundTilemap.CellToWorld(position) + new Vector3(0.5f, 0.5f, 0);
+
+
+        foreach (Vector3Int tilePos in selectedPositions) // this can be heavily optimized
+        {
+            TilemapManager.tilemapManager.UnhoverTile(tilePos);
+        }
+        selectedPositions = GetSelectedTiles(position, diceRoll);
+        foreach (Vector3Int tilePos in selectedPositions)
+        {
+            TilemapManager.tilemapManager.HoverTile(tilePos);
+        }
     }
 
     public override void OnUnhovered(Vector3Int position)
     {
         if (hovered == false) { return; }
         hovered = false;
+        foreach (Vector3Int tilePos in selectedPositions)
+        {
+            TilemapManager.tilemapManager.UnhoverTile(tilePos);
+        }
         DestroyShapeObject();
     }
 

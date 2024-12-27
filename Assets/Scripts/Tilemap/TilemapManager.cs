@@ -48,10 +48,10 @@ public class TilemapManager : MonoBehaviour
 
     void Update()
     {
-        SetCurrentHoveredTile();
+        SetMousePositionInfo();
     }
 
-    void SetCurrentHoveredTile() // update data based on where mouse is now
+    void SetMousePositionInfo() // update data based on where mouse is now
     {
         Vector3Int newTilePosition = groundTilemap.WorldToCell(Camera.main.ScreenToWorldPoint(Input.mousePosition));
         if (currentHoveredTilePosition == newTilePosition) { return; } // do nothing if selected tile is same
@@ -66,8 +66,22 @@ public class TilemapManager : MonoBehaviour
 
         if (currentHoveredTiledata != null)
         {
-            currentHoveredTiledata.OnHovered(newTilePosition); // hover new position
+            HoverTile(currentHoveredTilePosition); // hover new position
         }
+    }
+
+    public void HoverTile(Vector3Int tilePosition)
+    {
+        TileData hoveredTile = GetTileData(groundTilemap.GetTile(tilePosition));
+        if (hoveredTile == null) { return; }
+        hoveredTile.OnHovered(tilePosition);
+    }
+
+    public void UnhoverTile(Vector3Int tilePosition)
+    {
+        TileData hoveredTile = GetTileData(groundTilemap.GetTile(tilePosition));
+        if (hoveredTile == null) { return; }
+        hoveredTile.OnUnhovered(tilePosition);
     }
 
     /// <summary>
