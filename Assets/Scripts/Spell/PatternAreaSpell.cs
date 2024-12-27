@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Unity.Mathematics;
 using UnityEngine;
+using UnityEngine.AI;
 using UnityEngine.Tilemaps;
 
 [CreateAssetMenu(menuName = "Spell/Pattern Area Spell")]
@@ -10,12 +11,22 @@ public class PatternAreaSpell : Spell
     [SerializeField] float diceRollImpactMultiplier = 1;
     GameObject shapeObject;
 
-    public override void OnHovered(Vector3Int position, int diceRoll)
+    public override void WhileHovering(Vector3Int position, int diceRoll)
     {
-        
+        hovered = true;
+        if (shapeObject == null)
+        {
+            CreateShapeObject(position, diceRoll);
+        }
+
+        shapeObject.transform.position =
+            TilemapManager.tilemapManager.groundTilemap.CellToWorld(position) + new Vector3(0.5f, 0.5f, 0);
     }
-    public override void OnUnhovered(Vector3Int position, int diceRoll)
+
+    public override void OnUnhovered(Vector3Int position)
     {
+        if (hovered == false) { return; }
+        hovered = false;
         DestroyShapeObject();
     }
 
@@ -65,7 +76,6 @@ public class PatternAreaSpell : Spell
                 }
             }
         }
-        Debug.Log("out of " + countForTest + ", " + hitTiles.Count + " had their centers covered by the collider.");
         return hitTiles;
     }
 

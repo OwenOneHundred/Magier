@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
+using UnityEngine.Tilemaps;
 using static UnityEngine.InputSystem.InputAction;
 
 /// <summary>
@@ -33,18 +34,24 @@ public class TurnManager : MonoBehaviour
 
     private void Update()
     {
-        if (Mouse.current.leftButton.wasPressedThisFrame)
+        if (ingameUIController.selectedSpell == null) { return; }
+        if (!EventSystem.current.IsPointerOverGameObject(PointerInputModule.kMouseLeftId)) // mouse not over UI
         {
-            if (!EventSystem.current.IsPointerOverGameObject(PointerInputModule.kMouseLeftId))
+            if (Mouse.current.leftButton.wasPressedThisFrame) // mouse not over UI - clicking
             {
-                Debug.Log("state: " + state + " over UI object?: " + EventSystem.current.IsPointerOverGameObject());
-                
-                // if player turn and not clicking on UI
                 if (state == GameState.playerTurn && !EventSystem.current.IsPointerOverGameObject())
                 {
                     TryCastSpell();
                 }
             }
+            else // mouse not over UI - not clicking
+            {
+                ingameUIController.selectedSpell.WhileHovering(TilemapManager.tilemapManager.currentHoveredTilePosition, 6);
+            }
+        }
+        else // mouse over UI
+        {
+            ingameUIController.selectedSpell.OnUnhovered(TilemapManager.tilemapManager.currentHoveredTilePosition);
         }
     }
 

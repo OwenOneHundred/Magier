@@ -9,9 +9,9 @@ public abstract class Spell : ScriptableObject
 {
     public int manaCost = 5;
     public int price;
-
+    protected bool hovered = false;
     public abstract void OnCast(Vector3Int position, int diceRoll, TileOwner caster);
     public abstract List<Vector3Int> GetSelectedTiles(Vector3Int position, int diceRoll);
-    public abstract void OnHovered(Vector3Int position, int diceRoll);
-    public abstract void OnUnhovered(Vector3Int position, int diceRoll);
+    public abstract void WhileHovering(Vector3Int position, int diceRoll);
+    public abstract void OnUnhovered(Vector3Int position);
 }
