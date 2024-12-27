@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: DefaultTile
   m_EditorClassIdentifier: 
   tileName: Default
-  tile: {fileID: 11400000, guid: 2e03f4e3e0d064d44acc0fc3236af4a0, type: 2}
+  tile: {fileID: 11400000, guid: e966c9060e3e94371b4f80a20d1a43ae, type: 2}
   tilemap: {fileID: 0}
