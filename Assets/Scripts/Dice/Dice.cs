@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections.Generic;
 
 [CreateAssetMenu(menuName = "Die")]
-public class DieData : ScriptableObject
+public class Dice : ScriptableObject
 {
     [System.Serializable]
     public class DieFace
@@ -10,7 +10,9 @@ public class DieData : ScriptableObject
         public int value;
         public Sprite faceSprite;
     }
+
     [SerializeField] private List<DieFace> dieFaces = new List<DieFace>();
+    public List<Sprite> rollAnimSprites;
     
     public int RollDie()
     {
@@ -23,7 +25,9 @@ public class DieData : ScriptableObject
         foreach(DieFace face in dieFaces)
         {
             if(face.value == value)
+            {
                 return face.faceSprite;
+            }
         }
         return null;
     }

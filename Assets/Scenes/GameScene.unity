@@ -520,6 +520,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ecfdc52e9db241bc9666026664c3c64, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  diceToTest: {fileID: 11400000, guid: c877bf47beef44e799b0997ee1c041b3, type: 2}
+  diceGameObject: {fileID: 4177413609338028118, guid: 5874b77f1d5aa437286110599556ef4b, type: 3}
   state: 0
 --- !u!1 &448492479
 GameObject:

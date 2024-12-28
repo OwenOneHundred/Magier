@@ -14,14 +14,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dieFaces:
   - value: 1
-    faceSprite: {fileID: 0}
+    faceSprite: {fileID: 1564320001, guid: f17e8f344b43c4dbaa10d701787669e2, type: 3}
   - value: 2
-    faceSprite: {fileID: 0}
+    faceSprite: {fileID: -661210489, guid: f17e8f344b43c4dbaa10d701787669e2, type: 3}
   - value: 3
-    faceSprite: {fileID: 0}
+    faceSprite: {fileID: 1526385404, guid: f17e8f344b43c4dbaa10d701787669e2, type: 3}
   - value: 4
-    faceSprite: {fileID: 0}
+    faceSprite: {fileID: 951701580, guid: f17e8f344b43c4dbaa10d701787669e2, type: 3}
   - value: 5
-    faceSprite: {fileID: 0}
+    faceSprite: {fileID: -453890489, guid: f17e8f344b43c4dbaa10d701787669e2, type: 3}
   - value: 6
-    faceSprite: {fileID: 0}
+    faceSprite: {fileID: -1817008571, guid: f17e8f344b43c4dbaa10d701787669e2, type: 3}
+  rollAnimSprites:
+  - {fileID: -1239153248, guid: 266f71e1b6a97462a84d0a06e87ee9e7, type: 3}
+  - {fileID: 343975219, guid: 266f71e1b6a97462a84d0a06e87ee9e7, type: 3}
+  - {fileID: 74191930, guid: 266f71e1b6a97462a84d0a06e87ee9e7, type: 3}
+  - {fileID: -1348152922, guid: 266f71e1b6a97462a84d0a06e87ee9e7, type: 3}
+  - {fileID: -285520940, guid: 266f71e1b6a97462a84d0a06e87ee9e7, type: 3}
+  - {fileID: -360905246, guid: 266f71e1b6a97462a84d0a06e87ee9e7, type: 3}
+  - {fileID: -963267906, guid: 266f71e1b6a97462a84d0a06e87ee9e7, type: 3}

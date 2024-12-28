@@ -13,6 +13,8 @@ public class TurnManager : MonoBehaviour
 {
     public static TurnManager turnManager;
     private IngameUIController ingameUIController;
+    public Dice diceToTest;
+    public GameObject diceGameObject;
     void Awake()
     {
         if (turnManager == null || turnManager == this) // if tilemap manager already exists, destroy this one
@@ -62,9 +64,13 @@ public class TurnManager : MonoBehaviour
 
         if (ingameUIController.currentMana < ingameUIController.selectedSpell.manaCost) { return; }
 
+        int rolledNumber = Instantiate(diceGameObject, Vector3.zero, Quaternion.identity) // creates die number, rolls die
+            .GetComponent<DiceObjectRoller>()
+            .Roll(diceToTest);
+
         Vector3Int castTilePos = TilemapManager.tilemapManager.currentHoveredTilePosition;
         ingameUIController.selectedSpell.OnCast(castTilePos,
-            UnityEngine.Random.Range(1, 7), // TODO replace when we have dice that can be rolled
+            rolledNumber, // TODO replace when we have dice that can be rolled
             TilemapManager.tilemapManager.GetOwnerByName("Player"));
     }
 

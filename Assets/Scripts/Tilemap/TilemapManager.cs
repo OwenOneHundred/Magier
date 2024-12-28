@@ -25,9 +25,6 @@ public class TilemapManager : MonoBehaviour
 
     public static TilemapManager tilemapManager; // public static reference to this to be used from everywhere
 
-    public Spell spellToTest;
-    public Vector3Int positionToTestSpell = new Vector3Int(3, 3);
-
     void Awake()
     {
         if (tilemapManager == null || tilemapManager == this) // if tilemap manager already exists, destroy this one
