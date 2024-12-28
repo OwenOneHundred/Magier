@@ -21,7 +21,7 @@ TextureImporter:
     heightScale: 0.25
     normalMapFilter: 0
     flipGreenChannel: 0
-  isReadable: 0
+  isReadable: 1
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
@@ -43,9 +43,9 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 1
+  spriteMode: 2
   spriteExtrude: 1
-  spriteMeshType: 1
+  spriteMeshType: 0
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
   spritePixelsToUnits: 16
@@ -110,23 +110,31 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Grasstile1_0
+      name: Spell Icon_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 16
-        height: 16
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
-      physicsShape: []
-      tessellationDetail: -1
+      physicsShape:
+      - - {x: 16, y: -4}
+        - {x: 16, y: 4}
+        - {x: 4, y: 16}
+        - {x: -4, y: 16}
+        - {x: -16, y: 4}
+        - {x: -16, y: -4}
+        - {x: -4, y: -16}
+        - {x: 4, y: -16}
+      tessellationDetail: 0
       bones: []
-      spriteID: 425d338cbf94b48b0800000000000000
-      internalID: -5166954801733053148
+      spriteID: 87a33f1b0f04845e8a2e4ba9ba7e56b4
+      internalID: -2054338997
       vertices: []
       indices: 
       edges: []
@@ -145,7 +153,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Grasstile1_0: -5166954801733053148
+      Spell Icon_0: -2054338997
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
