@@ -21,9 +21,14 @@ public class TilemapManager : MonoBehaviour
     public Tilemap glowTilemap;
 
     public List<TileData> allTileData;
-    public List<TileOwner> allOwners;
 
     public static TilemapManager tilemapManager; // public static reference to this to be used from everywhere
+
+    
+
+    [SerializeField] TileOwner playerTileOwner;
+    [SerializeField] TileOwner enemyTileOwner;
+    [SerializeField] TileOwner noOwner;
 
     void Awake()
     {
@@ -80,48 +85,70 @@ public class TilemapManager : MonoBehaviour
         if (hoveredTile == null) { return; }
         hoveredTile.OnUnhovered(tilePosition);
     }
-
-    /// <summary>
-    /// Sets owner of tile, calls owner.OnOwnTile(position), and adds to dict of owned tiles. 
-    /// </summary>
-    /// <param name="position">Grid position of tile</param>
-    /// <param name="ownerName">name of the owner. Player, etc</param>
-    public void SetTileOwner(Vector3Int position, string ownerName = "Player")
-    {
-        TileOwner tileOwner = GetOwnerByName(ownerName);
-        ownedPositions.Add(position, tileOwner);
-        tileOwner.OnOwnTile(position);
-        tileBordersTilemap.SetTile(position, tileOwner.borderTilemapTile);
-        glowTilemap.SetTile(position, tileOwner.glowTilemapTile);
-    }
     
     /// <summary>
     /// Sets owner of tile, calls owner.OnOwnTile(position), and adds to dict of owned tiles. 
     /// </summary>
     /// <param name="position">Grid position of tile</param>
-    /// <param name="owner">name of the owner. Player, etc</param>
-    public void SetTileOwner(Vector3Int position, TileOwner tileOwner)
+    /// <param name="playerEnemy">True if player, false if enemy</param>
+    /// <param name="overwriteOwner">If tile already has an owner, set owner anyway</param>
+    public void SetTileOwner(Vector3Int position, TileOwnerIndex tileOwnerIndex, bool overwriteOwner = false)
     {
-        if (ownedPositions.ContainsKey(position)) { return; }
-        ownedPositions.Add(position, tileOwner);
-        tileOwner.OnOwnTile(position);
-        tileBordersTilemap.SetTile(position, tileOwner.borderTilemapTile);
-        glowTilemap.SetTile(position, tileOwner.glowTilemapTile);
+        bool tileHasOwner = ownedPositions.ContainsKey(position); // check if owned already
+        if (tileHasOwner && !overwriteOwner) { return; } // if already owned and !overwrite, return
+
+        TileOwner newTileOwner = TileOwnerIndexToOwner(tileOwnerIndex);
+        SetTileOwnerInOwnedPositionsList(position, tileOwnerIndex); // add or remove from list of owned tiles
+
+        newTileOwner.OnOwnTile(position);
+        tileBordersTilemap.SetTile(position, newTileOwner.borderTilemapTile);
+        glowTilemap.SetTile(position, newTileOwner.glowTilemapTile);
     }
 
-    public TileOwner GetOwnerByName(string name)
+    private void SetTileOwnerInOwnedPositionsList(Vector3Int position, TileOwnerIndex tileOwnerIndex)
     {
-        TileOwner toReturn = allOwners.FirstOrDefault(x => x.name == name);
-        if (toReturn == null) 
+        if (ownedPositions.ContainsKey(position))
         {
-            Debug.LogWarning("Tried to get owner: " + name +
-                " but no owner of that name exists in allOwners list. Returned allOwners[0].");
-            return allOwners[0];
+            if (tileOwnerIndex == TileOwnerIndex.none)
+            {
+                ownedPositions.Remove(position);
+            }
+            else
+            {
+                ownedPositions[position] = TileOwnerIndexToOwner(tileOwnerIndex);
+            }
         }
         else 
         {
-            return toReturn;
-        }   
+            if (tileOwnerIndex != TileOwnerIndex.none)
+            {
+                ownedPositions.Add(position, TileOwnerIndexToOwner(tileOwnerIndex));
+            }
+        }
+    }
+
+    public void ReverseTileOwner(Vector3Int position)
+    {
+        if (!ownedPositions.TryGetValue(position, out TileOwner tileOwner)) { return; }
+
+        bool isCurrentlyPlayerTile = tileOwner == playerTileOwner;
+
+        SetTileOwner(position, isCurrentlyPlayerTile ? TileOwnerIndex.enemy : TileOwnerIndex.player, true);
+    }
+
+    public void NeutralizeTileOwner(Vector3Int position)
+    {
+        if (!ownedPositions.TryGetValue(position, out TileOwner tileOwner)) { return; }
+
+        SetTileOwner(position, TileOwnerIndex.none, true);
+    }
+
+    public void NeutralizeOnlyOneTileOwner(Vector3Int position, TileOwnerIndex toNeutralize)
+    {
+        if (!ownedPositions.TryGetValue(position, out TileOwner tileOwner)) { return; }
+        if (tileOwner != TileOwnerIndexToOwner(toNeutralize)) { return; }
+
+        SetTileOwner(position, TileOwnerIndex.none, true);
     }
 
     void CreateFreshTiledataSOs()
@@ -134,6 +161,28 @@ public class TilemapManager : MonoBehaviour
 
     public TileData GetTileData(TileBase tileBase)
     {
-        return allTileData.FirstOrDefault(x => x.tile == tileBase);
+        TileData result = allTileData.FirstOrDefault(x => x.tile == tileBase);
+        return result == null ? allTileData[0] : result;
+    }
+
+    public enum TileOwnerIndex
+    {
+        none, player, enemy
+    }
+
+    private TileOwner TileOwnerIndexToOwner(TileOwnerIndex tileOwnerIndex)
+    {
+        if (tileOwnerIndex == TileOwnerIndex.none)
+        {
+            return noOwner;
+        }
+        else if (tileOwnerIndex == TileOwnerIndex.player)
+        {
+            return playerTileOwner;
+        }
+        else
+        {
+            return enemyTileOwner;
+        }
     }
 }

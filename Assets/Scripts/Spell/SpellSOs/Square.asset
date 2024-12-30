@@ -14,5 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   manaCost: 5
   price: 50
+  tileCaptureType: 0
   shapePrefab: {fileID: 3033551536828239640, guid: bbf56d34171db48bd998dbbc602da018, type: 3}
   diceRollImpactMultiplier: 1

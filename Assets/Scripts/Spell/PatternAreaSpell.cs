@@ -96,12 +96,36 @@ public class PatternAreaSpell : Spell
         return hitTiles;
     }
 
-    public override void OnCast(Vector3Int position, int diceRoll, TileOwner caster)
+    public override void OnCast(Vector3Int position, int diceRoll, bool player)
     {
-        foreach (Vector3Int tilePos in GetSelectedTiles(position, diceRoll))
+        switch (tileCaptureType)
         {
-            TilemapManager.tilemapManager.SetTileOwner(tilePos, caster);
+            case TileCaptureType.capture:
+                foreach (Vector3Int tilePos in GetSelectedTiles(position, diceRoll))
+                {
+                    TilemapManager.tilemapManager.SetTileOwner(tilePos, TilemapManager.TileOwnerIndex.player);
+                }
+                break;
+            case TileCaptureType.neutralize:
+                foreach (Vector3Int tilePos in GetSelectedTiles(position, diceRoll))
+                {
+                    TilemapManager.tilemapManager.NeutralizeTileOwner(tilePos);
+                }
+                break;
+            case TileCaptureType.swap:
+                foreach (Vector3Int tilePos in GetSelectedTiles(position, diceRoll))
+                {
+                    TilemapManager.tilemapManager.ReverseTileOwner(tilePos);
+                }
+                break;
+            case TileCaptureType.removeEnemy:
+                foreach (Vector3Int tilePos in GetSelectedTiles(position, diceRoll))
+                {
+                    TilemapManager.tilemapManager.NeutralizeOnlyOneTileOwner(tilePos, TilemapManager.TileOwnerIndex.enemy);
+                }
+                break;
         }
+        
         Destroy(shapeObject, 2);
         shapeObject = null;
     }

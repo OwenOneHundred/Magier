@@ -57,21 +57,22 @@ public class TurnManager : MonoBehaviour
         }
     }
 
-    void TryCastSpell()
+    void TryCastSpell() // casts a spell, also rolls a die
     {
         Debug.Log("try cast spell");
         if (ingameUIController.selectedSpell == null) { return; }
 
         if (ingameUIController.currentMana < ingameUIController.selectedSpell.manaCost) { return; }
 
+        // this should be moved into the turn start logic
         int rolledNumber = Instantiate(diceGameObject, Vector3.zero, Quaternion.identity) // creates die number, rolls die
             .GetComponent<DiceObjectRoller>()
             .Roll(diceToTest);
 
         Vector3Int castTilePos = TilemapManager.tilemapManager.currentHoveredTilePosition;
         ingameUIController.selectedSpell.OnCast(castTilePos,
-            rolledNumber, // TODO replace when we have dice that can be rolled
-            TilemapManager.tilemapManager.GetOwnerByName("Player"));
+            rolledNumber, 
+            true); // true means spell was casted by player
     }
 
     void EndEnemyTurn()

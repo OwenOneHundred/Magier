@@ -2,15 +2,9 @@ using UnityEngine;
 using System.Collections.Generic;
 
 [CreateAssetMenu(menuName = "Die")]
-public class Dice : ScriptableObject
+public class Dice : ScriptableObject, IHasPrice
 {
-    [System.Serializable]
-    public class DieFace
-    {
-        public int value;
-        public Sprite faceSprite;
-    }
-
+    [SerializeField] int price;
     [SerializeField] private List<DieFace> dieFaces = new List<DieFace>();
     public List<Sprite> rollAnimSprites;
     
@@ -30,5 +24,17 @@ public class Dice : ScriptableObject
             }
         }
         return null;
+    }
+
+    public int GetPrice()
+    {
+        return price;
+    }
+
+    [System.Serializable]
+    public class DieFace
+    {
+        public int value;
+        public Sprite faceSprite;
     }
 }
